@@ -6,8 +6,8 @@ services:
     build:
       context: ./
       args:
-          - GIT_USR=Igor-Velicoborec
-          - GIT_PWD=57gusosa57
+          - GIT_USR=********
+          - GIT_PWD=********
     links:
     - db
   
