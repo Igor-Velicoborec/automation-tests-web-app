@@ -5,6 +5,7 @@ import api.models.Project;
 import aquality.selenium.elements.interfaces.ITextBox;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import steps.ApiSteps;
 import ui.pages.*;
 import utils.BrowserUtils;
 import utils.PropertyHolder;
@@ -28,21 +29,19 @@ public class TestApp extends BaseTest {
 
     @Test
     public void testApp() {
-        String token = Api.getToken(PropertyHolder.getValueProperty("VALUE_VARIANT", TEST_PROPERTIES));
-        Assert.assertFalse(token.isEmpty(),"Token not valid");
+        ApiSteps.getToken();
         mainPage = new MainPage();
         Assert.assertEquals(mainPage.getVersionNumber(), VERSION_NUMBER, "Not valid number");
         mainPage.getGroupForm().selectGroup(GroupItem.NEXAGE);
-        Project[] apiProjects = Api.getProjects(VALUE_PROJECT_ID_NEXAGE);
         Assert.assertTrue(Api.isJsonResponseGetProjects(VALUE_PROJECT_ID_NEXAGE), "Response not json");
-        List<Project> apiSortedProjects = ProjectUtils.sortByStartTimeReversed(apiProjects);
-        Assert.assertTrue(ProjectUtils.isSortedByStartTimeReversed(apiSortedProjects), "Projects not sorted");
+        Assert.assertTrue(ProjectUtils.isSortedByStartTimeReversed(ProjectUtils.sortByStartTimeReversed
+                        (ApiSteps.getApiProjectNexage())), "Projects not sorted");
         nexagePage = new NexagePage();
         Assert.assertTrue(nexagePage.firstPageIsDisplayed(), "First page not displayed");
         List<ITextBox> uiProjects = nexagePage.getTestForm().getProjects(NUMBER_OF_UI_PROJECT);
-        Assert.assertTrue(ProjectUtils.isApiContainsUiProjects(apiSortedProjects,uiProjects), "Api projects not contains iu projects");
+        Assert.assertTrue(ProjectUtils.isApiContainsUiProjects(ProjectUtils.sortByStartTimeReversed
+                                (ApiSteps.getApiProjectNexage()),uiProjects),"Api projects not contains ui projects");
         BrowserUtils.goBack();
-
         String parentWindowHandle = WindowUtils.getCurrentWindowHandle();
         mainPage.getGroupForm().addProject();
         String childWindowHandle = WindowUtils.getOtherTabWindowHandle(parentWindowHandle);
