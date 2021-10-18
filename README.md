@@ -10,7 +10,7 @@ This application is for testing UI and API layers in a web application
 
 ### REST API
 | URL                    | Method         | Description                                           |
-|_ _ _ _ _               | _ _ _ _ _        _ _ _ _ _ _ _ _ _                                     |
+
 | *token/get*            | **POST**       | Get a personal token for user identification          |
 | *test/get/json*        | **POST**       | Get a list of tests in json format                    |
 | *test/put*             | **POST**       | Add test                                              |
